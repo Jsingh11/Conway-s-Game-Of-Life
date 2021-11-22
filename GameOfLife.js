@@ -1,16 +1,6 @@
 
 class GameOfLife {
 
-    /*
-    functions 
-        1 - create 2 2d arrays with zeros (active/inactive) - done!
-        2 - fill active array randomly with ones and zeros - done! 
-        3 - set color for cells - done! 
-        4 - count neigbours 
-        5 - update generation 
-        6 - clear canvas
-    */
-
     constructor() {
 
         this.cell_size = 5;
@@ -24,9 +14,10 @@ class GameOfLife {
         this.arrayInitialization = () => {
 
             for (let i = 0; i < this.cells_in_rows; i++) {
-                this.active_array[i] = [];
+                //this.active_array[i] = []; //don't want to make a 2d array
                 for (let j = 0; j < this.cells_in_column; j++) {
-                    this.active_array[i][j] = 0;
+                    //this.active_array[i][j] = 0;
+                    this.active_array[i*(this.cells_in_column) + j] = 0;
                 }
             }
             this.inactive_array = this.active_array;
@@ -37,7 +28,8 @@ class GameOfLife {
 
             for (let i = 0; i < this.cells_in_rows; i++) {
                 for (let j = 0; j < this.cells_in_column; j++) {
-                    this.active_array[i][j] = (Math.random() > 0.5) ? 1 : 0;
+                    //this.active_array[i][j] = (Math.random() > 0.5) ? 1 : 0;
+                    this.active_array[i*(this.cells_in_column) + j] = (Math.random() > 0.5) ? 1 : 0;
                 }
             }
 
@@ -48,7 +40,8 @@ class GameOfLife {
             for (let i = 0; i < this.cells_in_rows; i++) {
                 for (let j = 0; j < this.cells_in_column; j++) {
                     let color;
-                    if (this.active_array[i][j] == 1)
+                    //if (this.active_array[i][j] == 1)
+                    if (this.active_array[i*(this.cells_in_column) + j] == 1)
                         color = this.alive_color;
                     else
                         color = this.dead_color;
@@ -61,7 +54,8 @@ class GameOfLife {
 
         this.setCellValueHelper = (row, col) => {
             try {
-                return this.active_array[row][col];
+                //return this.active_array[row][col];
+                return this.active_array[row*(this.cells_in_column) + col];
             }
             catch {
                 return 0;
@@ -89,12 +83,14 @@ class GameOfLife {
                 return 0;
             }
             // dead cell with 3 neighbours becomes alive. 0 => 1
-            else if (this.active_array[row][col] === 0 && total === 3) {
+            //else if (this.active_array[row][col] === 0 && total === 3) {
+            else if (this.active_array[row*(this.cells_in_column) + col] === 0 && total === 3) {
                 return 1;
             }
             // or returning its status back. 0 => 0; 1 => 1
             else {
-                return this.active_array[row][col];
+                //return this.active_array[row][col];
+                return this.active_array[row*(this.cells_in_column) + col];
             }
 
         };
@@ -104,7 +100,8 @@ class GameOfLife {
             for (let i = 0; i < this.cells_in_rows; i++) {
                 for (let j = 0; j < this.cells_in_column; j++) {
                     let new_state = this.updateCellValue(i, j);
-                    this.inactive_array[i][j] = new_state;
+                    //this.inactive_array[i][j] = new_state;
+                    this.inactive_array[i*(this.cells_in_column) + j] = new_state;
                 }
             }
             this.active_array = this.inactive_array
